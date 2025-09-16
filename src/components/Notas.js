@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { db, auth } from "../firebase";
-import { collection, addDoc, query, where, onSnapshot, updateDoc, doc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  query,
+  onSnapshot,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 
 function Notas({ user }) {
   const [notas, setNotas] = useState([]);
@@ -8,29 +16,35 @@ function Notas({ user }) {
 
   useEffect(() => {
     if (!user) return;
-    const q = query(collection(db, "notas"), where("userId", "==", user.uid));
+    // Referencia a la subcolección de notas del usuario
+    const notasCollectionRef = collection(db, "users", user.uid, "notas");
+    const q = query(notasCollectionRef);
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      setNotas(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setNotas(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
     });
     return () => unsubscribe();
   }, [user]);
 
   const agregarNota = async () => {
     if (!texto.trim()) return;
-    await addDoc(collection(db, "notas"), {
+    // Agrega la nota a la subcolección
+    await addDoc(collection(db, "users", user.uid, "notas"), {
       texto,
-      userId: user.uid,
-      creado: new Date()
+      creado: new Date(),
     });
     setTexto("");
   };
 
   const editarNota = async (id, nuevoTexto) => {
-    await updateDoc(doc(db, "notas", id), { texto: nuevoTexto });
+    // Edita la nota en la subcolección
+    await updateDoc(doc(db, "users", user.uid, "notas", id), {
+      texto: nuevoTexto,
+    });
   };
 
   const eliminarNota = async (id) => {
-    await deleteDoc(doc(db, "notas", id));
+    // Elimina la nota de la subcolección
+    await deleteDoc(doc(db, "users", user.uid, "notas", id));
   };
 
   return (
