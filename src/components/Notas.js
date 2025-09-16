@@ -34,7 +34,7 @@ function Notas({ user }) {
   };
 
   return (
-    <div>
+    <div className="notas-container">
       <h2>Mis Notas</h2>
       <input value={texto} onChange={(e) => setTexto(e.target.value)} />
       <button onClick={agregarNota}>Agregar</button>
