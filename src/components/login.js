@@ -6,11 +6,6 @@ function Login({ setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const loginGoogle = async () => {
-    const result = await signInWithPopup(auth, provider);
-    setUser(result.user);
-  };
-
   const loginEmail = async () => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
@@ -20,11 +15,6 @@ function Login({ setUser }) {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       setUser(result.user);
     }
-  };
-
-  const logout = async () => {
-    await signOut(auth);
-    setUser(null);
   };
 
   return (
