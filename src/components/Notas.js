@@ -46,7 +46,7 @@ function Notas({ user }) {
               defaultValue={n.texto}
               onBlur={(e) => editarNota(n.id, e.target.value)}
             />
-            <button onClick={() => eliminarNota(n.id)}>❌</button>
+            <button onClick={() => eliminarNota(n.id)}>X</button>
           </li>
         ))}
       </ul>
