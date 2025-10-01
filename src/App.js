@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Login from "./components/login";
 import Notas from "./components/Notas";
 import { auth } from "./firebase";
+import WeatherTable from "./components/weather";
 import { logout } from "./authUtils";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -19,10 +20,7 @@ function App() {
   return (
     <div>
       <h1>📒 Mini App de Notas</h1>
-      {!user ? <Login setUser={setUser} /> : <Notas user={user} />}
-      <div>
-        {user && <button onClick={() => logout(setUser)}>Logout</button>}
-      </div>
+      <WeatherTable />
     </div>
   );
 }
